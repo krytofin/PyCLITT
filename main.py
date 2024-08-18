@@ -79,13 +79,20 @@ class Tracker:
             # tasks list is empty
             pass
 
-    def add(self, description):
+    def add(self, description) -> None:
         new_task = Task(new=True, description=description)
         task_id = new_task.id
         self._tasks[task_id] = new_task
         new_task.save()
         print(f"[+] Task added successfully {new_task}")
 
+    def update(self, index, description) -> None:
+        index = int(index)
+        self._tasks[index].description = description
+        self._tasks[index].updatedAt = f'{datetime.datetime.now():%d-%m-%Y %H:%M:%S}'
+        self._tasks[index].save()
+        print(f"[+] Task updated successfully {self._tasks[index]}")
+    
     def print_list(self, option=Options.all):
         if option == self.Options.all:
             if self._tasks:
@@ -139,7 +146,12 @@ if __name__ == "__main__":
                     print("[-] excepted description as third argument")
 
             case "update":
-                print("update task")
+                if arhv_len > 3:
+                    index = sys.argv[2]
+                    description = " ".join(sys.argv[3:])
+                    task_manager.update(index, description)
+                else:
+                    print("[-] excepted index and description as arguments")
 
             case "delete":
                 print("delete task")
