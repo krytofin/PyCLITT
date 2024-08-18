@@ -136,8 +136,9 @@ class Tracker:
     
     
     def print_list(self, option=Options.all):
-        if option == self.Options.all:
-            if self._tasks:
+        if not self._tasks:
+            print("[+] your tasks list is empty")
+        elif option == self.Options.all:
                 print("\nYour tasks:\n")
                 for index, task in self._tasks.items():
                     print("=" * 50)
@@ -147,8 +148,21 @@ class Tracker:
                     print(f"task created: {task.createdAt}")
                     print(f"task updated: {task.updatedAt}")
                 print("=" * 50)
-            else:
-                print("[+] your tasks list is empty")
+        else:
+            print(f"\nYour {option} tasks:\n")
+            for index, task in self._tasks.items():
+                is_printd = False
+                if task.status == option:
+                    print("=" * 50)
+                    print(f"task id: {task.id}")
+                    print(f"{task.description}")
+                    print(f"Status: {task.status}")
+                    print(f"task created: {task.createdAt}")
+                    print(f"task updated: {task.updatedAt}")
+                    is_printd = True
+                if is_printd:
+                    print("=" * 50)
+            
 
 
 def show_avalible_flags() -> None:
@@ -161,9 +175,9 @@ def show_avalible_flags() -> None:
     print("\tmark-in-progress <int:id> - replace old status on mark-in-progress")
     print("\tmark-done <int:id> - replace old status on mark-done")
     print("\tlist - to print all tasks")
-    print("\tlist <str:done> - to print all tasks with status done")
-    print("\tlist <str:todo> - to print all tasks with status todo")
-    print("\tlist <str:in-progress> - to print all tasks with status in-progress")
+    print("\tlist done - to print all tasks with status done")
+    print("\tlist todo - to print all tasks with status todo")
+    print("\tlist in-progress - to print all tasks with status in-progress")
     print("\thelp - to print this help manual")
 
 
@@ -210,7 +224,11 @@ if __name__ == "__main__":
 
             case "list":
                 if arhv_len > 2:
-                    ...
+                    option = sys.argv[2]
+                    if option in ['done', 'todo', 'in-progress']:
+                        task_manager.print_list(option=option)
+                    else:
+                        print(f'[-] Unexpected key: {option}. Expected: done, todo, in-progress')
                 else:
                     task_manager.print_list()
             case "help":
