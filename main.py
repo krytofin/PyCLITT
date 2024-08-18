@@ -21,8 +21,8 @@ class Task:
             self._id: int = self.task_id
             self.description = description
             self.status = status
-            self.createdAt = f'{datetime.datetime.now():%d-%m-%Y %H:%M:%S}'
-            self.updatedAt = f'{datetime.datetime.now():%d-%m-%Y %H:%M:%S}'
+            self.createdAt = f"{datetime.datetime.now():%d-%m-%Y %H:%M:%S}"
+            self.updatedAt = f"{datetime.datetime.now():%d-%m-%Y %H:%M:%S}"
             self.__increment_id()
         else:
             self._load(task)
@@ -59,6 +59,23 @@ class Task:
         with open("store/tasks.json", "+w") as json_file:
             json.dump(data, json_file, indent=4)
 
+    def save_by_id(self, id):
+        try:
+            with open("store/tasks.json", "+r") as json_file:
+                data = json.load(json_file)
+        except json.decoder.JSONDecodeError:
+            data = []
+        if data:
+            data[id] = {
+                "id": self._id,
+                "description": self.description,
+                "status": self.status,
+                "createdAt": self.createdAt,
+                "updatedAt": self.updatedAt,
+            }
+        with open("store/tasks.json", "+w") as json_file:
+            json.dump(data, json_file, indent=4)
+
 
 class Tracker:
 
@@ -88,22 +105,25 @@ class Tracker:
 
     def update(self, index, description) -> None:
         index = int(index)
-        self._tasks[index].description = description
-        self._tasks[index].updatedAt = f'{datetime.datetime.now():%d-%m-%Y %H:%M:%S}'
-        self._tasks[index].save()
-        print(f"[+] Task updated successfully {self._tasks[index]}")
-    
+        try:
+            self._tasks[index].description = description
+            self._tasks[index].updatedAt = f"{datetime.datetime.now():%d-%m-%Y %H:%M:%S}"
+            self._tasks[index].save_by_id(index)
+            print(f"[+] Task updated successfully {self._tasks[index]}")
+        except KeyError:
+            print(f'[-] Error. Task {index} does not existent')
+        
     def print_list(self, option=Options.all):
         if option == self.Options.all:
             if self._tasks:
                 print("\nYour tasks:\n")
                 for index, task in self._tasks.items():
                     print("=" * 50)
-                    print(f'task id: {task.id}')
+                    print(f"task id: {task.id}")
                     print(f"{task.description}")
                     print(f"Status: {task.status}")
-                    print(f'task created: {task.createdAt}')
-                    print(f'task updated: {task.updatedAt}')
+                    print(f"task created: {task.createdAt}")
+                    print(f"task updated: {task.updatedAt}")
                 print("=" * 50)
             else:
                 print("[+] your tasks list is empty")
