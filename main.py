@@ -1,7 +1,7 @@
 import datetime
 import json
 import sys
-
+import os
 
 
 class Task:
@@ -188,7 +188,7 @@ def show_avalible_flags() -> None:
     print("\thelp - to print this help manual")
 
 
-if __name__ == "__main__":
+def main():
     task_manager = Tracker()
 
     # ==============================
@@ -251,3 +251,6 @@ if __name__ == "__main__":
             case _:
                 print("The flag was expected to be entered")
                 show_avalible_flags()
+
+if __name__ == "__main__":
+    main()
