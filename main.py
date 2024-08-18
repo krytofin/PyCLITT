@@ -21,8 +21,8 @@ class Task:
             self._id: int = self.task_id
             self.description = description
             self.status = status
-            self._createdAt = datetime.datetime.now().isoformat()
-            self._updatedAt = datetime.datetime.now().isoformat()
+            self.createdAt = f'{datetime.datetime.now():%d-%m-%Y %H:%M:%S}'
+            self.updatedAt = f'{datetime.datetime.now():%d-%m-%Y %H:%M:%S}'
             self.__increment_id()
         else:
             self._load(task)
@@ -31,8 +31,8 @@ class Task:
         self._id: int = json_data["id"]
         self.description: int = json_data["description"]
         self.status: int = json_data["status"]
-        self._createdAt: int = json_data["createdAt"]
-        self._updatedAt: int = json_data["updatedAt"]
+        self.createdAt: int = json_data["createdAt"]
+        self.updatedAt: int = json_data["updatedAt"]
 
         self.__class__.task_id = self._id
         self.__increment_id()
@@ -52,8 +52,8 @@ class Task:
                 "id": self._id,
                 "description": self.description,
                 "status": self.status,
-                "createdAt": self._createdAt,
-                "updatedAt": self._updatedAt,
+                "createdAt": self.createdAt,
+                "updatedAt": self.updatedAt,
             }
         )
         with open("store/tasks.json", "+w") as json_file:
@@ -92,7 +92,11 @@ class Tracker:
                 print("\nYour tasks:\n")
                 for index, task in self._tasks.items():
                     print("=" * 50)
-                    print(f"{task.description}\nStatus: {task.status}")
+                    print(f'task id: {task.id}')
+                    print(f"{task.description}")
+                    print(f"Status: {task.status}")
+                    print(f'task created: {task.createdAt}')
+                    print(f'task updated: {task.updatedAt}')
                 print("=" * 50)
             else:
                 print("[+] your tasks list is empty")
