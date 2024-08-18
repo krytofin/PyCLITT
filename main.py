@@ -3,12 +3,9 @@ import json
 import sys
 
 
-
-
 class Task:
     task_id = 0
 
-    
     @classmethod
     def __increment_id(cls) -> None:
         cls.task_id += 1
@@ -18,12 +15,12 @@ class Task:
 
     def __repr__(self) -> str:
         return f"(ID: {self._id})"
-    
+
     def __init__(self, new=False, description="", status="todo", task=None) -> None:
         if new:
             self._id: int = self.task_id
-            self._description = description
-            self._status = status
+            self.description = description
+            self.status = status
             self._createdAt = datetime.datetime.now().isoformat()
             self._updatedAt = datetime.datetime.now().isoformat()
             self.__increment_id()
@@ -32,8 +29,8 @@ class Task:
 
     def _load(self, json_data) -> None:
         self._id: int = json_data["id"]
-        self._description: int = json_data["description"]
-        self._status: int = json_data["status"]
+        self.description: int = json_data["description"]
+        self.status: int = json_data["status"]
         self._createdAt: int = json_data["createdAt"]
         self._updatedAt: int = json_data["updatedAt"]
 
@@ -43,34 +40,34 @@ class Task:
     @property
     def id(self):
         return self._id
-    
+
     def save(self):
         try:
-            with open("store/tasks.json", '+r') as json_file:
+            with open("store/tasks.json", "+r") as json_file:
                 data = json.load(json_file)
         except json.decoder.JSONDecodeError:
             data = []
         data.append(
             {
                 "id": self._id,
-                "description": self._description,
-                "status": self._status,
+                "description": self.description,
+                "status": self.status,
                 "createdAt": self._createdAt,
                 "updatedAt": self._updatedAt,
             }
         )
-        with open("store/tasks.json", '+w') as json_file: 
+        with open("store/tasks.json", "+w") as json_file:
             json.dump(data, json_file, indent=4)
 
 
 class Tracker:
-    
+
     class Options:
-        all = 'all'
-        done = 'done'
-        todo = 'todo'
-        int_progress = 'in-progress'
-        
+        all = "all"
+        done = "done"
+        todo = "todo"
+        int_progress = "in-progress"
+
     def __init__(self) -> None:
         self._tasks = {}
         try:
@@ -81,18 +78,25 @@ class Tracker:
         except json.decoder.JSONDecodeError:
             # tasks list is empty
             pass
-        
+
     def add(self, description):
         new_task = Task(new=True, description=description)
         task_id = new_task.id
         self._tasks[task_id] = new_task
         new_task.save()
-        print(f'[+] Task added successfully {new_task}')
-        
+        print(f"[+] Task added successfully {new_task}")
+
     def print_list(self, option=Options.all):
         if option == self.Options.all:
-            for index, task in self._tasks.items():
-                print(index, task)
+            if self._tasks:
+                print("\nYour tasks:\n")
+                for index, task in self._tasks.items():
+                    print("=" * 50)
+                    print(f"{task.description}\nStatus: {task.status}")
+                print("=" * 50)
+            else:
+                print("[+] your tasks list is empty")
+
 
 def show_avalible_flags() -> None:
     print("Possible flags:\n")
@@ -132,16 +136,16 @@ if __name__ == "__main__":
 
             case "update":
                 print("update task")
-                
+
             case "delete":
                 print("delete task")
-                
+
             case "mark-in-progress":
                 print("replace to mark-in-progress")
-                
+
             case "mark-done":
                 print("mark-done")
-                
+
             case "list":
                 if arhv_len > 2:
                     ...
