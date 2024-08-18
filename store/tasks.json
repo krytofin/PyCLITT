@@ -1,33 +1,5 @@
 [
     {
-        "id": 0,
-        "description": "Work on telegram bot",
-        "status": "todo",
-        "createdAt": "2024-08-18T20:43:46.167045",
-        "updatedAt": "2024-08-18T20:43:46.167045"
-    },
-    {
-        "id": 1,
-        "description": "Work on telegram bot 2",
-        "status": "todo",
-        "createdAt": "2024-08-18T20:43:52.057759",
-        "updatedAt": "2024-08-18T20:43:52.057759"
-    },
-    {
-        "id": 2,
-        "description": "I need something",
-        "status": "todo",
-        "createdAt": "2024-08-18T21:21:27.304077",
-        "updatedAt": "2024-08-18T21:21:27.304077"
-    },
-    {
-        "id": 3,
-        "description": "123dfg dfsgdfsg ",
-        "status": "todo",
-        "createdAt": "2024-08-18T21:21:35.504891",
-        "updatedAt": "2024-08-18T21:21:35.504891"
-    },
-    {
         "id": 4,
         "description": "watch youtube",
         "status": "todo",
