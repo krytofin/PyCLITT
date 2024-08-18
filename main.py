@@ -2,6 +2,8 @@ import datetime
 import json
 import sys
 
+from aiogram.dispatcher.storage import EXCEEDED_COUNT
+
 
 class Task:
     task_id = 0
@@ -155,15 +157,21 @@ class Tracker:
                 if task.status == option:
                     print("=" * 50)
                     print(f"task id: {task.id}")
-                    print(f"{task.description}")
-                    print(f"Status: {task.status}")
+                    print(f"task: {task.description}")
+                    print(f"status: {task.status}")
                     print(f"task created: {task.createdAt}")
                     print(f"task updated: {task.updatedAt}")
                     is_printd = True
                 if is_printd:
                     print("=" * 50)
-            
-
+        
+    def replace_status(self, index, status):
+        try:
+            self._tasks[index].status = status
+            self._tasks[index].save_by_id(index)
+            print(f'[+] status was successfully replaced by {status}')
+        except KeyError:
+            print(f'[-] Error. Task {index} does not existent')
 
 def show_avalible_flags() -> None:
     print("Possible flags:\n")
@@ -217,10 +225,18 @@ if __name__ == "__main__":
                     print("[-] excepted description as third argument")
 
             case "mark-in-progress":
-                print("replace to mark-in-progress")
+                if arhv_len > 2:
+                    index = int(sys.argv[2])
+                    task_manager.replace_status(index, Tracker.Options.int_progress)
+                else:
+                    print("[-] excepted index")
 
             case "mark-done":
-                print("mark-done")
+                if arhv_len > 2:
+                    index = int(sys.argv[2])
+                    task_manager.replace_status(index, Tracker.Options.done)
+                else:
+                    print("[-] excepted index")
 
             case "list":
                 if arhv_len > 2:
