@@ -58,7 +58,7 @@ class Tracker:
             for index, task in self._tasks.items():
                 print("=" * 50)
                 print(f"task id: {task.id}")
-                print(f"{task.description}")
+                print(f"task: {task.description}")
                 print(f"Status: {task.status}")
                 print(f"task created: {task.createdAt}")
                 print(f"task updated: {task.updatedAt}")
