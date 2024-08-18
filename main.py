@@ -189,6 +189,12 @@ def show_avalible_flags() -> None:
 
 
 def main():
+    if not os.path.isdir('store'):
+        os.mkdir('store')
+        
+    if not os.path.isfile('store/tasks.json'):
+        with open('store/tasks.json', 'w') as file:
+            json.dump([], file)
     task_manager = Tracker()
 
     # ==============================
