@@ -1,2 +1,4 @@
 store/
 store/tasks.json
+
+__pycache__/
