@@ -70,7 +70,7 @@ class Task:
                 "description": self.description,
                 "status": self.status,
                 "createdAt": self.createdAt,
-                "updatedAt": self.updatedAt,
+                "updatedAt": self.updatedAt
             }
         with open("store/tasks.json", "+w") as json_file:
             json.dump(data, json_file, indent=4)
