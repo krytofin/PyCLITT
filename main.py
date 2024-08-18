@@ -75,7 +75,20 @@ class Task:
             }
         with open("store/tasks.json", "+w") as json_file:
             json.dump(data, json_file, indent=4)
-
+            
+    def save_withuot_self(self, index):
+        try:
+            with open("store/tasks.json", "+r") as json_file:
+                data = json.load(json_file)
+        except json.decoder.JSONDecodeError:
+            data = []
+        if data:
+            try:
+                data.pop(index)
+            except KeyError:
+                raise
+        with open("store/tasks.json", "+w") as json_file:
+            json.dump(data, json_file, indent=4)
 
 class Tracker:
 
@@ -112,7 +125,16 @@ class Tracker:
             print(f"[+] Task updated successfully {self._tasks[index]}")
         except KeyError:
             print(f'[-] Error. Task {index} does not existent')
-        
+    
+    def delete_task(self, index):
+        index = int(index)
+        try:
+            self._tasks[index].save_withuot_self(index)
+            print(f"[+] Task delete successfully {self._tasks[index]}")
+        except KeyError:
+            print(f'[-] Error. Task {index} does not existent')
+    
+    
     def print_list(self, option=Options.all):
         if option == self.Options.all:
             if self._tasks:
@@ -174,7 +196,11 @@ if __name__ == "__main__":
                     print("[-] excepted index and description as arguments")
 
             case "delete":
-                print("delete task")
+                if arhv_len > 2:
+                    index = int(sys.argv[2])
+                    task_manager.delete_task(index)
+                else:
+                    print("[-] excepted description as third argument")
 
             case "mark-in-progress":
                 print("replace to mark-in-progress")
