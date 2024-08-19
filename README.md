@@ -3,7 +3,7 @@
 
 PyCLITT(Python CLI Task Tracker) is task list management from the command line. This program allows you to manage the task list directly from the terminal.
 
-[project url](https://github.com/krytofin/PyCLITT)
+[project url](https://roadmap.sh/projects/task-tracker)](https://github.com/krytofin/PyCLITT)
 
 
 ## Install
